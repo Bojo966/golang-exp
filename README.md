@@ -33,6 +33,10 @@ dep ensure
 
 ## Development
 
+### Middleware
+
+<https://github.com/grpc-ecosystem/go-grpc-middleware>
+
 ### Gen files from proto files
 
 ```bash

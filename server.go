@@ -27,15 +27,16 @@ package main
 import (
 	"flag"
 	"fmt"
+	"golang-todo-app/handlers"
 	"log"
 	"net"
 
 	"google.golang.org/grpc"
 
+	gen "golang-todo-app/proto"
+
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/testdata"
-
-	pb "golang-todo-app/proto"
 )
 
 var (
@@ -45,15 +46,6 @@ var (
 	jsonDBFile = flag.String("json_db_file", "", "A json file containing a list of features")
 	port       = flag.Int("port", 10000, "The server port")
 )
-
-type routeGuideServer struct {
-	pb.UnimplementedTodoAppServer
-}
-
-func newServer() *routeGuideServer {
-	s := &routeGuideServer{}
-	return s
-}
 
 func main() {
 	log.Println("Starting up web server")
@@ -77,6 +69,6 @@ func main() {
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterTodoAppServer(grpcServer, newServer())
+	gen.RegisterTodoAppServer(grpcServer, handlers.NewTodoAppServer())
 	grpcServer.Serve(lis)
 }

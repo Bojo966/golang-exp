@@ -8,6 +8,12 @@
   version = "v1.3.4"
 
 [[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "0cd6bf5da1e1c83f8b45653022c74f71af0538a4"
+  version = "v1.1.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["http/httpguts","http2","http2/hpack","idna","internal/timeseries","trace"]
@@ -40,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "05744fdda0952dd347dc9f27ac42d501923d98f885d4fe0f3c5b78535d6aa1ff"
+  inputs-digest = "347b02fa65aa8c16ae5665752a8efc7d2e2e97636c3af165456c31dbfba017ac"
   solver-name = "gps-cdcl"
   solver-version = 1
