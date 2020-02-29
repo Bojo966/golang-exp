@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package todoapp;
+
+// The TodoApp service definition
+service TodoApp {
+  // Creates a todo and saves it
+  rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse) {} 
+}
+
+
+message CreateTodoRequest {
+  string title = 1;
+  string description =2;
+}
+
+message CreateTodoResponse {
+  string uuid = 1;
+  string title = 2;
+  string description = 3;
+}
