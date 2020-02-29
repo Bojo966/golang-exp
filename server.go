@@ -36,6 +36,9 @@ import (
 
 	gen "golang-todo-app/proto"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/testdata"
 )
@@ -49,7 +52,7 @@ var (
 )
 
 func main() {
-	logger, _ := zap.NewProduction()
+	logger, _ := zap.NewDevelopment()
 	defer logger.Sync() // flushes buffer, if any
 
 	logger.Info("Starting up web server")
@@ -58,7 +61,17 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	var opts []grpc.ServerOption
+
+	var opts []grpc.ServerOption = []grpc.ServerOption{grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+		grpc_zap.UnaryServerInterceptor(logger),
+		grpc_ctxtags.UnaryServerInterceptor(),
+	)),
+		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+			grpc_zap.StreamServerInterceptor(logger),
+			grpc_ctxtags.StreamServerInterceptor(),
+		)),
+	}
+
 	if *tls {
 		if *certFile == "" {
 			*certFile = testdata.Path("server1.pem")
@@ -70,7 +83,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to generate credentials %v", err)
 		}
-		opts = []grpc.ServerOption{grpc.Creds(creds)}
+		opts = append(opts, grpc.Creds(creds))
 	}
 
 	grpcServer := grpc.NewServer(opts...)
