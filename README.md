@@ -32,5 +32,5 @@ For more info on gRPC with Go visit <https://grpc.io/docs/quickstart/go/>
 ### Gen files from proto files
 
 ```bash
-
+protoc -I protoc/ protoc/todoapp.proto  --go_out=plugins=grpc:protoc/
 ```
