@@ -31,6 +31,7 @@ import (
 	"log"
 	"net"
 
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
 	gen "golang-todo-app/proto"
@@ -48,7 +49,10 @@ var (
 )
 
 func main() {
-	log.Println("Starting up web server")
+	logger, _ := zap.NewProduction()
+	defer logger.Sync() // flushes buffer, if any
+
+	logger.Info("Starting up web server")
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
@@ -68,6 +72,7 @@ func main() {
 		}
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
+
 	grpcServer := grpc.NewServer(opts...)
 	gen.RegisterTodoAppServer(grpcServer, handlers.NewTodoAppServer())
 	grpcServer.Serve(lis)

@@ -51,6 +51,18 @@ go run server.go
 
 <https://github.com/grpc-ecosystem/go-grpc-middleware>
 
+### Logging
+
+For logging the project uses [zap](https://github.com/uber-go/zap) that is widely adopted along the Golang ecosystem
+
+### Dependencies
+
+To add a new go dependency run the following
+
+```bash
+dep ensure -add <your-dependency>
+```
+
 ### Gen files from proto files
 
 ```bash
