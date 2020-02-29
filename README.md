@@ -31,7 +31,21 @@ To get all dependencies, run
 dep ensure
 ```
 
+Next run the following to be sure that everything is building properly:
+
+```bash
+go build
+```
+
 ## Development
+
+### Running project locally
+
+To run the project locally, run the following
+
+```bash
+go run server.go
+```
 
 ### Middleware
 
